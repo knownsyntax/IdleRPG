@@ -323,7 +323,7 @@ sub parse {
                             "$rps{$k}{class}, is now online from ".
                             "nickname $usernick. Next level in ".
                             duration($rps{$k}{next}).".");       
-                    notice("Logon successful. Next level in ".
+                    notice("Login successful. Next level in ".
                            duration($rps{$k}{next}).".", $usernick);
                 }
             }
@@ -708,28 +708,25 @@ sub parse {
                             $usernick, 1);
                 }
                 else {
+                    chanmsg("IdleRPG is resetting users...");
                     for my $k (keys(%rps)) {
                         $rps{$k}{next}=$opts{rpbase};
                         $rps{$k}{level}=0;
                         $rps{$k}{online}=1;
                         $rps{$k}{idled}=0;
-                        $rps{$k}{item}{amulet}=0;
-                        $rps{$k}{item}{charm}=0;
-                        $rps{$k}{item}{helm}=0;
-                        $rps{$k}{item}{"pair of boots"}=0;
-                        $rps{$k}{item}{"pair of gloves"}=0;
-                        $rps{$k}{item}{ring}=0;
-                        $rps{$k}{item}{"set of leggings"}=0;
-                        $rps{$k}{item}{shield}=0;
-                        $rps{$k}{item}{tunic}=0;
-                        $rps{$k}{item}{weapon}=0;
-                        $rps{$k}{pen_mesg}=0;
-                        $rps{$k}{pen_nick}=0;
-                        $rps{$k}{pen_part}=0;
-                        $rps{$k}{pen_kick}=0;
-                        $rps{$k}{pen_quit}=0;
-                        $rps{$k}{pen_quest}=0;
-                        $rps{$k}{pen_logout}=0;
+                        $rps{$k}{x} = int(rand($opts{mapx}));
+                        $rps{$k}{y} = int(rand($opts{mapy}));
+                        $rps{$k}{alignment}="n";
+                        for my $item ("ring","amulet","charm","weapon","helm",
+                                      "tunic","pair of gloves","shield",
+                                      "set of leggings","pair of boots") {
+                            $rps{$k}{item}{$item} = 0;
+                        }
+                        for my $pen ("pen_mesg","pen_nick","pen_part",
+                                     "pen_kick","pen_quit","pen_quest",
+                                     "pen_logout","pen_logout") {
+                            $rps{$k}{$pen} = 0;
+                        }
                         $rps{$k}{created}=time();
                         $rps{$k}{lastlogin}=time();
                     }
